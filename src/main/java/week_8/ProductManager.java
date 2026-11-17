@@ -1,5 +1,7 @@
 package week_8;
 
+import java.util.List;
+
 import static input.InputUtils.*;
 
 class ProductManager {
@@ -61,6 +63,12 @@ class ProductManager {
         //  For each product, display the name first, then the quantity.
         //  For example, display the name, then quantity, of one product per line.
 
+        List<String> products = database.fetchAll();
+
+        for (String product : products) {
+            System.out.println(product);
+        }
+
     }
     
     protected void addProduct() {
@@ -69,6 +77,20 @@ class ProductManager {
         // TODO Deal with product already existing in DB. Do not add another product with the same name.
         //  If a product with this name is already in the database,
         //  display this exact message: "Product already in database"
+
+        // Ask the user for product information
+        String name = stringInput("Enter product name:");
+        int quantity = intInput("Enter product quantity:");
+
+        // Save the product to the database
+        boolean added = database.insertProduct(name, quantity);
+
+        // Show the result
+        if (added) {
+            System.out.println("Product added successfully");
+        } else {
+            System.out.println("Product already in database");
+        }
 
     }
     
@@ -82,6 +104,20 @@ class ProductManager {
         //  do not make any changes to the database, and display
         //  this exact message: "Product to edit not found"
 
+        // Ask for the product name and new quantity
+        String name = stringInput("Enter product name:");
+        int quantity = intInput("Enter new quantity:");
+
+        // Update the product in the database
+        boolean updated = database.updateProductQuantity(name, quantity);
+
+        // Show the result
+        if (updated) {
+            System.out.println("Product quantity updated successfully");
+        } else {
+            System.out.println("Product to edit not found");
+        }
+
     }
     
     protected void deleteProduct() {
@@ -92,6 +128,19 @@ class ProductManager {
         // TODO handle product not existing in DB. If a product with the name given does not exist,
         //  do not make any changes to the database, and display
         //  this exact message: "Product to delete not found"
+
+        // Ask for the product name
+        String name = stringInput("Enter product name to delete:");
+
+        // Delete the product from the database
+        boolean deleted = database.removeProduct(name);
+
+        // Show the result
+        if (deleted) {
+            System.out.println("Product deleted successfully");
+        } else {
+            System.out.println("Product to delete not found");
+        }
 
     }
     
